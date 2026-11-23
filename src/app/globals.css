@@ -1,0 +1,239 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: #08090D;
+  --color-bg-2: #10121A;
+  --color-bg-3: #141722;
+  --color-accent: #8B5CF6;
+  --color-accent-2: #22D3EE;
+  --color-fg: #F8FAFC;
+  --color-muted: #94A3B8;
+  --font-display: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: #08090D;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--color-fg);
+  background-color: #08090D;
+  background-image:
+    radial-gradient(50% 40% at 50% 0%, rgba(139, 92, 246, 0.10), transparent 70%),
+    radial-gradient(50% 45% at 85% 12%, rgba(139, 92, 246, 0.05), transparent 60%),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(34, 211, 238, 0.045) 1px, transparent 1px);
+  background-size: auto, auto, 40px 40px, 40px 40px;
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08090D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.55);
+  border: 3px solid #08090D;
+  border-radius: 6px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: #08090D;
+}
+
+:focus-visible {
+  outline: 2px solid #22D3EE;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.glass {
+  background: rgba(20, 23, 34, 0.62);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-strong {
+  background: rgba(16, 18, 26, 0.85);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 55% 45%,
+    rgba(139, 92, 246, 0.32),
+    rgba(34, 211, 238, 0.16) 45%,
+    transparent 75%
+  );
+  filter: blur(90px);
+  pointer-events: none;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Skill cards (3D tilt + glow) */
+.skill-card {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.skill-card:hover {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1.04);
+  box-shadow:
+    0 0 0 2px rgba(139, 92, 246, 0.55),
+    0 0 30px rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.skill-icon-entry {
+  opacity: 0;
+  animation: skillIconIn 0.8s ease-out forwards;
+}
+
+@keyframes skillIconIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Journey timeline */
+.timeline-line {
+  border-left: 2px solid rgba(139, 92, 246, 0.35);
+}
+
+/* Architecture diagrams */
+.arch-diagram {
+  user-select: none;
+}
+
+.arch-layer-title {
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.arch-node {
+  font-family: var(--font-geist-sans);
+  border-style: solid;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.arch-node:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5);
+}
+
+.arch-node.arch-node--frontend {
+  border-color: rgba(34, 211, 238, 0.3);
+  background: rgba(34, 211, 238, 0.07);
+}
+
+.arch-node.arch-node--backend {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: rgba(139, 92, 246, 0.07);
+}
+
+.arch-node.arch-node--database {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: rgba(245, 158, 11, 0.07);
+}
+
+.arch-node.arch-node--auth {
+  border-color: rgba(168, 85, 247, 0.3);
+  background: rgba(168, 85, 247, 0.07);
+}
+
+.arch-node.arch-node--external {
+  border-color: rgba(34, 211, 238, 0.25);
+  background: rgba(34, 211, 238, 0.06);
+}
+
+.arch-edge {
+  stroke-linecap: round;
+  stroke: rgba(148, 163, 184, 0.55);
+  transition: stroke 0.25s ease, stroke-width 0.25s ease, stroke-dashoffset 0.5s ease;
+}
+
+.arch-edge[data-revealed="true"] {
+  stroke-dashoffset: 0;
+}
+
+.arch-edge.arch-edge--hl {
+  stroke: #22D3EE;
+  stroke-width: 3.5;
+  filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.65));
+}
+
+.arch-edge-label {
+  font-family: var(--font-geist-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  fill: var(--color-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  background: rgba(20, 23, 34, 0.6);
+}
