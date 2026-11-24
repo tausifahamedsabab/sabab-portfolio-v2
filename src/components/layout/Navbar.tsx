@@ -154,7 +154,10 @@ export function Navbar() {
           <Button href={`mailto:${personalInfo.email}`} variant="outline" size="sm" icon={EMAIL_ICON} className="px-4">
             Email
           </Button>
-          <Button href={resumeMailto()} size="md" icon={DOWNLOAD_ICON}>
+          <Button href={personalInfo.linkedinUrl} variant="outline" size="sm" icon={<BrandLinkedIn />}>
+            LinkedIn
+          </Button>
+          <Button href={resumeMailto()} size="md" icon={DOWNLOAD_ICON} className="whitespace-nowrap">
             Download Resume
           </Button>
         </div>

@@ -96,7 +96,6 @@ export function Hero() {
             transition={{ type: "tween", duration: 0.6, ease: "easeOut" }}
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
-              <motion.span className="h-2 w-2 rounded-full bg-accent animate-pulse" aria-hidden="true" />
               {personalInfo.heroBadge}
             </span>
             <span className="text-[12px] text-muted">{personalInfo.availability}</span>
@@ -136,14 +135,18 @@ export function Hero() {
             animate={prefersReduced ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
             transition={{ type: "tween", duration: 0.7, delay: 0.65, ease: "easeOut" }}
           >
+            <Button
+              href={`mailto:${personalInfo.email}?subject=Resume%20Request&body=Hi%20Tausif%2C%0A%0AI%27m%20interested%20in%20your%20resume.%20Could%20you%20please%20share%20it%3F%0A%0ABest%20regards`}
+              title="Resume is requested via your email client — no file is hosted on this site"
+              aria-label="Download Resume (via email)"
+            >
+              Download Resume
+            </Button>
             <Button onClick={() => scrollToSection("#projects")} icon={<Icon name="ChevronsRight" size={16} />} title="Browse my projects">
               Explore My Work
             </Button>
-            <Button variant="secondary" href={`mailto:${personalInfo.email}`} title="Get in touch">
+            <Button variant="outline" href={`mailto:${personalInfo.email}`} title="Get in touch">
               Let&apos;s Talk
-            </Button>
-            <Button variant="outline" href={`mailto:${personalInfo.email}?subject=Resume%20Request&body=Hi%20Tausif%2C%0A%0AI%27m%20interested%20in%20your%20resume.%20Could%20you%20please%20share%20it%3F%0A%0ABest%20regards`} title="Download my resume">
-              Download Resume
             </Button>
           </motion.div>
         </motion.div>

@@ -11,9 +11,19 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
+    title: "Backend Development",
+    subtitle: "Developing secure APIs, servers and integrations.",
+    skills: [
+      { name: "Node.js", icon: "Cpu" },
+      { name: "Express.js", icon: "Server" },
+      { name: "REST APIs", icon: "Send" },
+      { name: "MongoDB", icon: "Database" },
+      { name: "Mongoose", icon: "Layers" },
+    ],
+  },
+  {
     title: "Frontend Development",
-    subtitle:
-      "Building responsive, accessible, and visually appealing user interfaces.",
+    subtitle: "Building responsive, user-friendly interfaces.",
     skills: [
       { name: "HTML5", icon: "Globe" },
       { name: "CSS3", icon: "Palette" },
@@ -25,20 +35,8 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    title: "Backend Development",
-    subtitle:
-      "Developing APIs, authentication systems, database integrations, and server-side functionality.",
-    skills: [
-      { name: "Node.js", icon: "Cpu" },
-      { name: "Express.js", icon: "Server" },
-      { name: "REST APIs", icon: "Send" },
-      { name: "MongoDB", icon: "Database" },
-      { name: "Mongoose", icon: "Layers" },
-    ],
-  },
-  {
     title: "Database & Authentication",
-    subtitle: "Secure data storage with modern authentication patterns.",
+    subtitle: "Secure data storage and user access control.",
     skills: [
       { name: "Better Auth", icon: "Key" },
       { name: "JWT", icon: "ShieldCheck" },
@@ -48,7 +46,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     title: "Development Tools",
-    subtitle: "Tooling I use every day to ship fast and clean.",
+    subtitle: "Tooling I use to build and ship products.",
     skills: [
       { name: "Git", icon: "GitBranch" },
       { name: "GitHub", icon: "Triangle" },

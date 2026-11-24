@@ -13,7 +13,11 @@ interface AboutBlock {
 }
 
 const blocks: AboutBlock[] = [
-  { text: personalInfo.shortIntro, emphasis: true },
+  {
+    text:
+      "I'm a Full-Stack Web Developer focused on building complete web applications, combining modern frontend experiences with backend systems, database integration, and authentication. My projects include a salon booking platform, a studio rental marketplace, and a product price comparison application.",
+    emphasis: true,
+  },
   {
     title: "Development philosophy",
     text:

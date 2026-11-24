@@ -9,11 +9,11 @@ export const personalInfo = {
   title: "Full-Stack Web Developer",
   shortIntro:
     "I'm a passionate Full-Stack Web Developer focused on building modern, responsive, and user-friendly web applications. I enjoy turning ideas into functional digital products using modern web technologies.",
-  availability: "Open to Internships & Junior Developer Opportunities.",
+  availability: "Open to Full-Stack Developer Opportunities.",
   githubUrl: "https://github.com/tausifahamedsabab",
-  linkedinUrl: "https://linkedin.com/in/tausif-ahmed-sabab",
+  linkedinUrl: "https://www.linkedin.com/in/tausif-ahamed-sabab/",
   email: "taosifahmed042@gmail.com",
-  heroBadge: "AVAILABLE FOR FULL STACK WEB DEVELOPMENT ROLES",
+  heroBadge: "OPEN TO FULL-STACK DEVELOPER ROLES",
   heroHeadline: "Hi, I'm Tausif Ahamed Sabab.",
   heroAnimatedHeadline: [
     "Full-Stack Web Developer",
@@ -26,7 +26,8 @@ export const personalInfo = {
   heroButtons: ["Explore My Work", "Let's Talk", "Download Resume"],
   aboutHeading: "Beyond The Code.",
   skillsHeading: "My Technical Arsenal.",
-  skillsSubtitle: "Code, tools and practices that define my craft.",
+  skillsSubtitle:
+    "Core technologies: Node.js, Express.js, MongoDB, Mongoose, Better Auth, JWT, REST APIs, React, TypeScript, Next.js — building full-stack web applications.",
   projectsHeading: "Selected Works.",
   projectsSubtitle:
     "Real applications. Practical solutions. Built with modern technologies.",
