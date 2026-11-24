@@ -208,7 +208,11 @@ export function Hero() {
           <motion.div
             className="grid place-items-center rounded-full border border-accent/25 bg-accent/8 p-3"
             animate={prefersReduced ? undefined : { y: [0, 8, 0] }}
-            transition={prefersReduced ? { duration: 0.01 } : { type: "spring", stiffness: 200, damping: 14, repeat: Infinity, repeatDelay: 0.2 }}
+            transition={
+              prefersReduced
+                ? { duration: 0.01 }
+                : { type: "tween", duration: 0.9, ease: [0.3, 0, 0.7, 1], repeat: Infinity, repeatDelay: 0.2 }
+            }
           >
             <Icon name="ChevronDown" size={18} className="text-accent" />
           </motion.div>
