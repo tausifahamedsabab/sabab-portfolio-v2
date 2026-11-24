@@ -2,18 +2,29 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { Suspense } from "react";
+import { useEffect, useState } from "react";
 import { personalInfo, navSections } from "@/data/details";
 import { Button } from "@/components/ui/Button";
 import { BrandGitHub, BrandLinkedIn, BrandMail } from "@/components/ui/BrandIcons";
-import { FooterYear } from "@/components/layout/FooterYear";
 import { cn } from "@/lib/utils";
 
-function FooterYearFallback() {
+/** Current year, synced after mount — legal for client components under cacheComponents. */
+function FooterYear() {
+  const prefersReduced = useReducedMotion() ?? false;
+  const [year, setYear] = useState<number | null>(null);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sync the dynamic current year after mount
+    setYear(new Date().getFullYear());
+  }, []);
   return (
-    <span className="font-display text-sm font-black tracking-[0.2em] text-fg">
-      © 2026
-    </span>
+    <motion.span
+      className="font-display text-sm font-black tracking-[0.2em] text-fg"
+      initial={prefersReduced ? { opacity: 1 } : { opacity: 0, y: 10 }}
+      animate={prefersReduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      transition={{ duration: prefersReduced ? 0.01 : 0.6 }}
+    >
+      © <span className="text-xs">{year ?? "2026"}</span>
+    </motion.span>
   );
 }
 
@@ -102,9 +113,7 @@ export function Footer() {
           </div>
 
           <motion.div {...stagger(3)} className="flex flex-col items-center gap-3 text-center md:col-span-4 md:items-end">
-            <Suspense fallback={<FooterYearFallback />}>
-              <FooterYear />
-            </Suspense>
+            <FooterYear />
             <p className="text-[13px] text-muted">Tausif Ahamed Sabab</p>
             <p className="text-[11px] text-[#475569]">Built with Next.js, TypeScript, Tailwind CSS and Framer Motion</p>
           </motion.div>
