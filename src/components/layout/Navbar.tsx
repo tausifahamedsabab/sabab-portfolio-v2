@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { personalInfo, navSections } from "@/data/details";
 import { Button } from "@/components/ui/Button";
 import { BrandGitHub, BrandLinkedIn, BrandMail } from "@/components/ui/BrandIcons";
-import { cn } from "@/lib/utils";
 
 const DOWNLOAD_ICON = (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -54,7 +53,6 @@ function resumeMailto() {
 export function Navbar() {
   const prefersReduced = useReducedMotion();
   const navRef = useRef<HTMLDivElement>(null);
-  const [scrolled, setScrolled] = useState(false);
   const [indicator, setIndicator] = useState({ left: 0, width: 0 });
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -77,7 +75,6 @@ export function Navbar() {
         width: Math.max(rect.width - 16, 24),
       });
     }
-    setScrolled(window.scrollY > 16);
   };
 
   useEffect(() => {
@@ -102,12 +99,7 @@ export function Navbar() {
         initial={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
         animate={prefersReduced ? { opacity: 1 } : { opacity: 1 }}
         transition={prefersReduced ? { duration: 0.01 } : { duration: 0.5, ease: "easeOut" }}
-        className={cn(
-          "relative fixed inset-x-0 top-0 z-40 flex items-center justify-between px-4 py-3 transition-all duration-300 md:px-8",
-          scrolled
-            ? "bg-bg-2/95 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-md md:bg-bg-2/90"
-            : "bg-transparent backdrop-blur-md md:bg-transparent",
-        )}
+        className="relative fixed inset-x-0 top-0 z-40 flex items-center justify-between bg-bg-2/90 px-4 py-3 backdrop-blur-md transition-all duration-300 md:px-8"
         role="navigation"
         aria-label="Main navigation"
       >
