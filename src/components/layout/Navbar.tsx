@@ -99,9 +99,9 @@ export function Navbar() {
     <>
       <motion.nav
         ref={navRef}
-        initial={{ y: -16 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+        initial={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
+        animate={prefersReduced ? { opacity: 1 } : { opacity: 1 }}
+        transition={prefersReduced ? { duration: 0.01 } : { duration: 0.5, ease: "easeOut" }}
         className={cn(
           "relative fixed inset-x-0 top-0 z-40 flex items-center justify-between px-4 py-3 transition-all duration-300 md:px-8",
           scrolled
