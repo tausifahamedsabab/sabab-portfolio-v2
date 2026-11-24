@@ -99,11 +99,10 @@ export function Navbar() {
     <>
       <motion.nav
         ref={navRef}
-        initial={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
-        animate={prefersReduced ? { opacity: 1 } : { opacity: 1 }}
-        transition={prefersReduced ? { duration: 0.01 } : { duration: 0.5, ease: "easeOut" }}
+        initial={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         className={cn(
-          "relative fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-[#141722]/40 bg-[#070811]/85 px-4 py-3 backdrop-blur-md transition-all duration-300 md:px-8",
+          "relative fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-[#141722]/40 bg-[#070811]/85 px-4 py-3 backdrop-blur-md",
           scrolled && "shadow-[0_3px_14px_rgba(0,0,0,0.25)]",
         )}
         role="navigation"
