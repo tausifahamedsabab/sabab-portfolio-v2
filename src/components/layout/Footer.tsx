@@ -2,29 +2,28 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import { personalInfo, navSections } from "@/data/details";
 import { Button } from "@/components/ui/Button";
 import { BrandGitHub, BrandLinkedIn, BrandMail } from "@/components/ui/BrandIcons";
+import { FooterYear } from "@/components/layout/FooterYear";
 import { cn } from "@/lib/utils";
 
-function FooterYear() {
-  const prefersReduced = useReducedMotion();
-  const [year, setYear] = useState(() => new Date().getFullYear());
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
-  return <span>{year}</span>;
+function FooterYearFallback() {
+  return (
+    <span className="font-display text-sm font-black tracking-[0.2em] text-fg">
+      © 2026
+    </span>
+  );
 }
 
 export function Footer() {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = useReducedMotion() ?? false;
 
   const stagger = (i: number) => ({
-    initial: { opacity: 0, y: 10 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: null,
-    transition: prefersReduced ? { duration: 0.01 } : { duration: 0.6, delay: i * 0.08, ease: "easeOut" as const },
+    initial: prefersReduced ? { opacity: 1 } : { opacity: 0, y: 12 },
+    animate: prefersReduced ? { opacity: 1 } : { opacity: 1, y: 0 },
+    transition: prefersReduced ? { duration: 0.01 } : { duration: 0.7, delay: 0.06 * i, ease: "easeOut" as const },
   });
 
   return (
@@ -33,14 +32,9 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-12">
           <motion.div {...stagger(0)} className="flex flex-col gap-3 md:col-span-4">
             <motion.span className="font-display text-2xl font-black tracking-[0.28em] text-fg">SABAB.DEV</motion.span>
-            <p className="max-w-xs text-[13.5px] leading-relaxed text-muted">
-              {personalInfo.footerIntro}
-            </p>
+            <p className="max-w-xs text-[13.5px] leading-relaxed text-muted">{personalInfo.footerIntro}</p>
             <div className="flex items-center gap-4 text-[13px] text-muted">
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="inline-flex items-center gap-2 transition-colors hover:text-accent"
-              >
+              <a href={`mailto:${personalInfo.email}`} className="inline-flex items-center gap-2 transition-colors hover:text-accent">
                 <BrandMail className="text-accent" />
                 {personalInfo.email}
               </a>
@@ -89,12 +83,12 @@ export function Footer() {
               </h4>
               <ul className="flex flex-col gap-2">
                 <li>
-                  <a href={personalInfo.githubUrl} className="text-[13px] text-muted transition-colors hover:text-accent" target="_blank" rel="noopener noreferrer">
+                  <a href={personalInfo.githubUrl} target="_blank" rel="noopener noreferrer" className="text-[13px] text-muted transition-colors hover:text-accent">
                     GitHub
                   </a>
                 </li>
                 <li>
-                  <a href={personalInfo.linkedinUrl} className="text-[13px] text-muted transition-colors hover:text-accent" target="_blank" rel="noopener noreferrer">
+                  <a href={personalInfo.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-[13px] text-muted transition-colors hover:text-accent">
                     LinkedIn
                   </a>
                 </li>
@@ -108,16 +102,16 @@ export function Footer() {
           </div>
 
           <motion.div {...stagger(3)} className="flex flex-col items-center gap-3 text-center md:col-span-4 md:items-end">
-            <motion.span className="font-display text-sm font-black tracking-[0.2em] text-fg">
-              © <FooterYear />
-            </motion.span>
+            <Suspense fallback={<FooterYearFallback />}>
+              <FooterYear />
+            </Suspense>
             <p className="text-[13px] text-muted">Tausif Ahamed Sabab</p>
             <p className="text-[11px] text-[#475569]">Built with Next.js, TypeScript, Tailwind CSS and Framer Motion</p>
           </motion.div>
         </div>
       </div>
       <div className={cn("pointer-events-none relative z-10 mt-10 border-t border-[#141722] pt-6 text-center")}>
-        <motion.p className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={null} transition={{ duration: 0.6 }}>
+        <motion.p className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted" {...stagger(4)}>
           All external links verified — live deployment links are listed per project.
         </motion.p>
       </div>

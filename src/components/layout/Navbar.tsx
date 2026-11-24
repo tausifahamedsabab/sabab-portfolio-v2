@@ -103,7 +103,7 @@ export function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
-          "fixed inset-x-0 top-0 z-40 flex items-center justify-between px-4 py-3 transition-all duration-300 md:px-8",
+          "relative fixed inset-x-0 top-0 z-40 flex items-center justify-between px-4 py-3 transition-all duration-300 md:px-8",
           scrolled
             ? "bg-bg-2/95 shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-md md:bg-bg-2/90"
             : "bg-transparent backdrop-blur-md md:bg-transparent",
@@ -141,8 +141,17 @@ export function Navbar() {
           ))}
         </motion.ul>
 
+        {/* Animated underline pill */}
+        <motion.span
+          className="pointer-events-none absolute bottom-2 left-0 z-20 h-[2px] rounded-full bg-linear-to-r from-accent to-accent-2 shadow-[0_0_8px_rgba(139,92,246,0.55)]"
+          style={{ left: indicator.left, width: indicator.width }}
+          animate={prefersReduced ? { opacity: 0.7 } : { opacity: 0.95 }}
+          transition={prefersReduced ? { duration: 0.01 } : { type: "spring", stiffness: 180, damping: 26 }}
+          initial={{ opacity: 0 }}
+        />
+
         <div className="hidden items-center gap-3 md:flex">
-          <Button href={`mailto:${personalInfo.email}`} variant="outline" size="sm" icon={<EMAIL_ICON />} className="px-4">
+          <Button href={`mailto:${personalInfo.email}`} variant="outline" size="sm" icon={EMAIL_ICON} className="px-4">
             Email
           </Button>
           <Button href={resumeMailto()} size="md" icon={DOWNLOAD_ICON}>

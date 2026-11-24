@@ -26,7 +26,7 @@ export function Toast({
 
   const motionTransition = prefersReduced
     ? { duration: 0.01 }
-    : { type: "spring", stiffness: 260, damping: 26 };
+    : { type: "spring" as const, stiffness: 260, damping: 26 };
 
   return (
     <AnimatePresence mode="wait">

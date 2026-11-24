@@ -282,7 +282,7 @@ export const architectureDiagrams: Record<string, ProjectArchitecture> = {
       },
     ],
   },
-  bazar-dor: {
+  "bazar-dor": {
     title: "Bazar-Dor — System Architecture",
     description:
       "Browser ↔ Next.js frontend ↔ external Bazaar-Dor API. This repo ships no backend; product data is fetched server-side from `API_BASE_URL` (`/api/bazardor/categories`, `/api/bazardor/products/:id`) with `revalidate: 60`.",
@@ -347,12 +347,6 @@ export interface ProjectSectionDef {
   subtitle?: string;
 }
 
-export interface ProjectProblem {
-  statement: string;
-  objectives: string[];
-  solution: string;
-}
-
 export const projectSections: Record<string, ProjectSectionDef[]> = {
   salonbook: [
     { title: "Project Overview", subtitle: "Mature-style online service platform" },
@@ -384,7 +378,7 @@ export const projectSections: Record<string, ProjectSectionDef[]> = {
     { title: "Screenshots and Visual Previews" },
     { title: "Links" },
   ],
-  bazar-dor: [
+  "bazar-dor": [
     { title: "Project Overview", subtitle: "Bengali product catalog" },
     { title: "The Problem" },
     { title: "Project Objectives" },
@@ -404,3 +398,156 @@ export const projectSections: Record<string, ProjectSectionDef[]> = {
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);
 }
+
+// ---- Navigation sections (shared by Navbar and Footer) ---------------------
+
+export const navSections = [
+  { href: "#home", label: "Home" },
+  { href: "#about", label: "About" },
+  { href: "#skills", label: "Skills" },
+  { href: "#projects", label: "Projects" },
+  { href: "#experience", label: "Experience" },
+  { href: "#contact", label: "Contact" },
+] as const;
+
+// ---- Project detail page content (per verified repo facts) -------------------
+
+export interface ProjectChallenge {
+  issue: string;
+  solution: string;
+}
+
+export interface ProjectProblem {
+  statement: string;
+  objectives: string[];
+  solution: string;
+  challenges: ProjectChallenge[];
+}
+
+export const projectDetails: Record<string, ProjectProblem> = {
+  salonbook: {
+    statement:
+      "Customers discovering a salon, managing appointments, and completing payments were historically spread across disconnected tools (spreadsheets, third-party booking services, Stripe checkouts), and staff had to manually manage slots, status updates and customer communication. salonbook addresses this by providing a unified platform for service discovery, booking and management.",
+    objectives: [
+      "Provide a simple, smooth public booking flow for customers (discover services, book, pay).",
+      "Give customers full visibility of their appointments — view and cancel own requests, view payment history, edit profile.",
+      "Let staff manage services, appointments and customers through a dedicated admin dashboard.",
+      "Secure the platform: authentication for customers and admins, blocked-user enforcement, public registration can never create an admin.",
+    ],
+    solution:
+      "SalonBook is a full-stack Next.js application. The public Next.js 16 App Router frontend lets customers discover services and book appointments; payment is handled with Stripe Checkout and webhook-verified transaction records. A dedicated admin dashboard (on the same backend) lets staff manage services, appointments, customers and transactions. Sessions are Better Auth; requests are made through a server-side API layer that adds role checks. Data lives in MongoDB (Mongoose), including Better Auth's user collection extended with `role` and `isBlocked`.",
+    challenges: [
+      {
+        issue: "Securing the API boundary between the Next.js app and the Express server",
+        solution:
+          "API requests go through `src/lib/serverApi.ts` (server-side) with role checks on every protected call; `src/proxy.ts` guards `/admin/*` and `/customer/*` server-side; the Express API uses JWT verification middleware (`requireAuth`/`requireRole`).",
+      },
+      {
+        issue: "Never allowing public registration to create an admin",
+        solution:
+          "The seeded admin is created at startup; `ALLOW_ADMIN_REGISTRATION=false`; role is never accepted from registration input.",
+      },
+      {
+        issue: "Reliably updating appointment and payment status",
+        solution:
+          "Payment status changes are written only after a verified Stripe webhook; `src/lib/session.ts` syncs the navbar after login/logout.",
+      },
+      {
+        issue: "Uploading service images efficiently",
+        solution:
+          "Admin services page uses ImgBB (`src/lib/imgbb.ts`) for direct image uploads during service creation/editing.",
+      },
+    ],
+  },
+  studiospace: {
+    statement:
+      "Locating available creative spaces (photo studios, sound stages, podcast rooms, music suites) for guests and hosts has been fragmented across listing sites and manual communication. Hosts had no way to verify availability automatically, and guests had no booking system. StudioSpace provides a peer-to-peer marketplace where hosts list studios and guests discover and book with calendars.",
+    objectives: [
+      "Help guests discover and book available studio spaces by city, category, price and rating.",
+      "Help hosts list, manage and book their studios (availability, refunds, cancellation, reviews).",
+      "Ensure double-booking prevention: bookings start as `pending` and only `confirmed` bookings block availability.",
+      "Deliver a unified modern booking flow on a Next.js frontend connected to an Express/MongoDB backend (with a no-backend mock mode for development).",
+    ],
+    solution:
+      "StudioSpace is a peer-to-peer marketplace for booking creative spaces by the hour: photo studios, sound stages, podcast rooms, music suites and art workshops. Guests search studios with filters (category, city, price, rating) and request bookings; hosts manage listings with galleries, house rules, reviews and availability; guests cancel bookings; refunds apply on cancellation. The Next.js App Router frontend (React 19, TS, Swiper, Base UI) talks to the Express.js + MongoDB backend (sibling repo studio-space-server) or to an in-memory mock adapter (`API_MODE=mock`).",
+    challenges: [
+      {
+        issue: "Preventing double bookings",
+        solution:
+          "Booking requests are validated against availability on the backend (`GET /api/studios/:id/availability`); only `confirmed` bookings block slots.",
+      },
+      {
+        issue: "Securing booking flows with authentication and owner-based authorization",
+        solution:
+          "HTTP-only signed JWT session cookies via the mock adapter or the live Express API (`register`, `login`, `logout`, `me`, Google); owner checks on `PATCH/DELETE /api/studios/:id`.",
+      },
+      {
+        issue: "Direct image uploads while keeping it lightweight",
+        solution: "Hosts can upload cover images from the browser via ImgBB (`NEXT_PUBLIC_IMGBB_API_KEY`).",
+      },
+    ],
+  },
+  "bazar-dor": {
+    statement:
+      "A fast, structured catalog for daily-changing product prices has been hard to browse: prices shift every day by category, and users of local markets want to quickly compare price changes across the day. Bazar-Dor builds a responsive, bilingual (Bengali) marketplace for daily-changing products.",
+    objectives: [
+      "Give users a fast, structured catalog of daily-changing product prices (today, yesterday, last week, last month).",
+      "Help users pick products by comparing price changes and multiple market price ranges.",
+      "Provide responsive, bilingual browsing across categories and product details.",
+    ],
+    solution:
+      "Bazar-Dor is a Next.js 16 e-commerce application (TypeScript + Tailwind) with server-side data fetching from the Bazaar-Dor API (`API_BASE_URL`, `revalidate: 60`): categories and products with daily price data (change indicators ▲/▼/• + percentages) and multi-market price ranges. It ships category pages and product detail pages with bangla product names.",
+    challenges: [
+      {
+        issue: "Displaying daily price changes across multiple markets",
+        solution:
+          "Product detail pages list all market ranges with division, min and max prices, plus per-product change indicators.",
+      },
+      {
+        issue: "Staying fresh with changing data",
+        solution:
+          "Server-side fetching with `revalidate: 60` keeps product data current without extra infrastructure.",
+      },
+    ],
+  },
+};
+
+export interface ProjectLayerNotes {
+  frontend: string;
+  backend: string;
+  database: string;
+  auth: string;
+}
+
+export const projectLayerNotes: Record<string, ProjectLayerNotes> = {
+  salonbook: {
+    frontend:
+      "The Next.js 16 App Router frontend (TypeScript) renders the public pages; data is fetched through server-side calls (`src/lib/serverApi.ts`, which adds server-side role checks) with a client-side Better Auth session cookie synced by `src/lib/session.ts`.",
+    backend:
+      "The Express.js REST API (`salonbook-server`) serves public services, booking flows, admin routes, webhooks (`/api/webhooks/stripe`) and `/api/auth/callback/google`; `requireAuth`/`requireRole` JWT verification middleware protects requests, and `src/proxy.ts` guards `/admin/*` and `/customer/*` server-side.",
+    database:
+      "MongoDB (Mongoose) with four collections: `user` (Better Auth extended with `role` + `isBlocked`), `services`, `appointments`, and `transactions`.",
+    auth:
+      "Sessions are Better Auth cookies; the frontend reads the HTTP-only session cookie and the backend validates with JWT middleware. Blocked-user enforcement is server-side; public registration can never create an admin (`ALLOW_ADMIN_REGISTRATION=false`).",
+  },
+  studiospace: {
+    frontend:
+      "The Next.js App Router frontend (React 19, TypeScript, Tailwind v4, Swiper) renders the marketplace, studio detail pages and dashboards; API calls go through `src/lib/api` (server-side in live mode, mock adapter otherwise).",
+    backend:
+      "Express.js + MongoDB in `studio-space-server`: auth routes (register/login/logout/me/google), studios (list/detail/categories/cities/availability/reviews) and bookings (create/cancel); live mode proxies these from Next.js (`API_MODE=live`).",
+    database:
+      "MongoDB stores studios, users and bookings; bookings start as `pending` and only `confirmed` bookings block studio availability.",
+    auth:
+      "HTTP-only signed JWT session cookies (mock mode) or the API's `Set-Cookie` (live mode); `GET /api/auth/me` resolves the session; owner checks guard studios CUD routes.",
+  },
+  "bazar-dor": {
+    frontend:
+      "Next.js App Router server components fetch products/categories from `API_BASE_URL` (`/api/bazardor/categories`, `/api/bazardor/products/:id`, `revalidate: 60`); the client renders product cards, category pages and product detail pages.",
+    backend:
+      "No backend lives in this repo — data comes from the external Bazaar-Dor API via server-side fetches; the frontend uses better-auth as a declared dependency.",
+    database:
+      "The data (Bengali product names, categories, price history: today/yesterday/lastWeek/lastMonth, markets) is served by the external API.",
+    auth:
+      "better-auth is a declared dependency; the frontend is otherwise SSR-based with no user sessions implemented in this repo.",
+  },
+};

@@ -86,19 +86,20 @@ export function Particles() {
         // connect to nearest neighbor
         let nearest: Particle | null = null;
         let nearestDist = 99999;
-        particles.forEach((q) => {
-          if (q === p) return;
+        for (const q of particles) {
+          if (q === p) continue;
           const d = Math.hypot(q.x - p.x, q.y - p.y);
           if (d < nearestDist) {
             nearestDist = d;
             nearest = q;
           }
-        });
-        if (nearest && nearestDist < 170) {
+        }
+        const target = nearest as Particle | null;
+        if (target && nearestDist < 170) {
           const alpha = prefersReduced ? 0.06 : ((170 - nearestDist) / 170) * 0.35;
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
-          ctx.lineTo(nearest!.x, nearest!.y);
+          ctx.lineTo(target.x, target.y);
           ctx.strokeStyle = "#22D3EE";
           ctx.globalAlpha = alpha;
           ctx.lineWidth = 0.7;

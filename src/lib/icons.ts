@@ -1,5 +1,6 @@
 import {
   AppWindow,
+  ArrowRightLeft,
   Atom,
   Award,
   Box,
@@ -9,6 +10,7 @@ import {
   CalendarArrowDown,
   CalendarDays,
   CheckCircle,
+  ChevronDown,
   CircleCheck,
   ClipboardCheck,
   CloudUpload,
@@ -17,6 +19,7 @@ import {
   Compass,
   CreditCard,
   Database,
+  Download,
   ExternalLink,
   Filter,
   Flag,
@@ -29,6 +32,8 @@ import {
   Inbox,
   Key,
   Layers,
+  Lock,
+  Brackets,
   Mail,
   MessageCircle,
   Monitor,
@@ -46,6 +51,7 @@ import {
   Users,
   X,
   Zap,
+  Terminal,
   type LucideIcon,
 } from "lucide-react";
 
@@ -55,6 +61,7 @@ import {
  */
 const icons: Record<string, LucideIcon> = {
   AppWindow,
+  ArrowRightLeft,
   Atom,
   Award,
   Box,
@@ -64,6 +71,7 @@ const icons: Record<string, LucideIcon> = {
   CalendarArrowDown,
   CalendarDays,
   CheckCircle,
+  ChevronDown,
   CircleCheck,
   ClipboardCheck,
   CloudUpload,
@@ -72,6 +80,7 @@ const icons: Record<string, LucideIcon> = {
   Compass,
   CreditCard,
   Database,
+  Download,
   ExternalLink,
   Filter,
   Flag,
@@ -84,6 +93,8 @@ const icons: Record<string, LucideIcon> = {
   Inbox,
   Key,
   Layers,
+  Lock,
+  Brackets,
   Mail,
   MessageCircle,
   Monitor,

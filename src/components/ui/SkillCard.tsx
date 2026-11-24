@@ -1,21 +1,25 @@
 "use client";
 
+/* eslint-disable react-hooks/static-components -- getIcon resolves a stable per-name Lucide component; rendering it is intentional */
+
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { SkillItem } from "@/data/skills";
 import { getIcon } from "@/lib/icons";
-import { cn } from "@/lib/utils";
-
 export interface SkillCardProps {
   skill: SkillItem;
   delay?: number;
 }
 
+function Icon({ name, size = 20, className }: { name: string; size?: number; className?: string }) {
+  const C = getIcon(name);
+  return <C size={size} className={className} aria-hidden="true" />;
+}
+
 export function SkillCard({ skill, delay = 0 }: SkillCardProps) {
-  const prefersReduced = useReducedMotion();
-  const Icon = getIcon(skill.icon);
+  const prefersReduced = useReducedMotion() ?? false;
   const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [tilt, setTilt] = useState<{ x: string; y: string }>({ x: "0deg", y: "0deg" });
 
   useEffect(() => {
     const el = cardRef.current;
@@ -24,7 +28,7 @@ export function SkillCard({ skill, delay = 0 }: SkillCardProps) {
       const r = el.getBoundingClientRect();
       const px = r.width ? (e.clientX - r.left) / r.width - 0.5 : 0;
       const py = r.height ? (e.clientY - r.top) / r.height - 0.5 : 0;
-      setTilt({ x: -py * 7, y: px * 7 });
+      setTilt({ x: `${-py * 7}deg`, y: `${px * 7}deg` });
     };
     el.addEventListener("mousemove", onMouseMove, { passive: true });
     return () => el.removeEventListener("mousemove", onMouseMove);
@@ -39,14 +43,14 @@ export function SkillCard({ skill, delay = 0 }: SkillCardProps) {
       className="skill-card glass rounded-2xl px-5 py-5 flex items-center gap-4 sm:gap-5"
       style={
         {
-          "--tilt-x": prefersReduced ? 0 : tilt.x,
-          "--tilt-y": prefersReduced ? 0 : tilt.y,
+          "--tilt-x": prefersReduced ? "0deg" : tilt.x,
+          "--tilt-y": prefersReduced ? "0deg" : tilt.y,
         } as React.CSSProperties
       }
       role="listitem"
     >
       <div className="grid place-items-center glass-strong rounded-xl p-2.5 shadow-[0_0_0_1px_rgba(255,255,255,0.06)]">
-        <Icon size={20} className="text-accent" aria-hidden="true" />
+        <Icon name={skill.icon} size={20} className="text-accent" aria-hidden="true" />
       </div>
       <span className="truncate font-display text-[15px] font-semibold tracking-tight text-fg">
         {skill.name}

@@ -214,12 +214,20 @@ body {
 
 .arch-edge {
   stroke-linecap: round;
+  stroke-width: 2;
+  fill: none;
   stroke: rgba(148, 163, 184, 0.55);
-  transition: stroke 0.25s ease, stroke-width 0.25s ease, stroke-dashoffset 0.5s ease;
+  transition: stroke 0.25s ease, stroke-width 0.25s ease;
+  animation: archEdgeDraw 0.6s ease-out forwards var(--stagger, 0s);
 }
 
-.arch-edge[data-revealed="true"] {
-  stroke-dashoffset: 0;
+@keyframes archEdgeDraw {
+  from {
+    stroke-dashoffset: var(--edge-len, 40px);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 .arch-edge.arch-edge--hl {

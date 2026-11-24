@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { useInViewOnce } from "@/hooks/useInViewOnce";
 import { cn } from "@/lib/utils";
 
 export interface SectionHeadingProps {
@@ -18,22 +19,19 @@ export function SectionHeading({
   align = "left",
   className,
 }: SectionHeadingProps) {
-  const prefersReduced = useReducedMotion();
-  const { ref, inView } = useInView({ threshold: 0.1, once: true });
+  const prefersReduced = useReducedMotion() ?? false;
+  const { ref, inView } = useInViewOnce(0.1);
   const alignClasses =
     align === "center" ? "items-center text-center" : "items-start text-left";
-
-  const transition = prefersReduced
-    ? { duration: 0.01 }
-    : { duration: 0.7, ease: "easeOut" as const };
+  const initialState = prefersReduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 };
+  const animateState = prefersReduced ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 };
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={null}
-      transition={transition}
+      initial={initialState}
+      animate={inView || prefersReduced ? animateState : initialState}
+      transition={prefersReduced ? { duration: 0.01 } : { duration: 0.7, ease: "easeOut" }}
       className={cn("flex flex-col gap-3 md:gap-4", className)}
     >
       {badge && (
